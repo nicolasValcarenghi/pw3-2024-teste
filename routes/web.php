@@ -12,19 +12,19 @@ Route::get('/animais', [AnimaisController::class, 'index'])->name('animais');
 
 Route::get('/animais/cadastrar', [AnimaisController::class, 'cadastrar'])->name('animais.cadastrar');
 
-Route::post('/animais/cadastrar',[AnimaisController::class, 'gravar'])->name('animais.gravar');
+Route::post('/animais/cadastrar', [AnimaisController::class, 'gravar'])->name('animais.gravar');
 
 Route::get('/animais/apagar/{animal}', [AnimaisController::class, 'apagar'])->name('animais.apagar');
 
 Route::delete('/animais/apagar/{animal}', [AnimaisController::class, 'deletar']);
 
-Route::prefix('usuarios')->middleware('auth')->group(function() {
+Route::prefix('usuarios')->middleware('auth')->group(function () {
     Route::get('/', [UsuariosController::class, 'index'])->name('usuarios');
 
     Route::get('/inserir', [UsuariosController::class, 'create'])->name('usuarios.inserir');
-    
+
     Route::post('/inserir', [UsuariosController::class, 'insert'])->name('usuarios.gravar');
-    
+
     Route::get('/apagar/{usuario}', [UsuariosController::class, 'remove'])->name('usuarios.apagar');
 });
 
