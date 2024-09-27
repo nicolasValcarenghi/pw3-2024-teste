@@ -5,15 +5,13 @@ namespace App\Http\Controllers;
 use App\Mail\AnimalCadastrado;
 use App\Models\Animal;
 use Illuminate\Http\Request;
-use illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Mail;
 
 class AnimaisController extends Controller
 {
     public function index() {
+        $dados = Animal::withTrashed()->get();
 
-        $dados = Animal::withTrashed()->all();
-        
         return view('animais.index', [
             'animais' => $dados,
         ]);
@@ -24,15 +22,23 @@ class AnimaisController extends Controller
     }
 
     public function gravar(Request $form) {
+
         $dados = $form->validate([
             'nome' => 'required|min:3',
             'idade' => 'required|integer'
         ]);
 
-       // Animal::create($dados);
-        Mail::to('alguem@batata.com') ->send(new AnimalCadastrado);
-        return;
-       // return redirect()->route('animais');
+        $animal = Animal::create($dados);
+
+        Mail::to('bernardo7206@gmail.com')->send(new AnimalCadastrado($animal));
+        return; 
+        // return redirect()->route('animais');
+    }
+
+    public function ver(Animal $animal) {
+        return view('animais.ver', [
+            'animal' => $animal
+        ]);
     }
 
     public function apagar(Animal $animal) {
